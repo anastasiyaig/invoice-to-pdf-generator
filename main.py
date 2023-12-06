@@ -29,6 +29,7 @@ for filepath in filepaths:
     pdf.cell(w=35, h=8, txt=columns[3], border=1)
     pdf.cell(w=25, h=8, txt=columns[4], border=1, ln=1)
 
+    # adding rows from the table to the pdf cell by cell for whole row, then do new line
     for index, row in df.iterrows():
         pdf.set_font(family="Times", size=10)
         pdf.set_text_color(80, 80, 80)
@@ -38,5 +39,26 @@ for filepath in filepaths:
         pdf.cell(w=40, h=8, txt=str(row['amount_purchased']), border=1)
         pdf.cell(w=35, h=8, txt=str(row['price_per_unit']), border=1)
         pdf.cell(w=25, h=8, txt=str(row['total_price']), border=1, ln=1)
+
+    # adding total price
+    pdf.set_font(family="Times", size=10)
+    pdf.set_text_color(80, 80, 80)
+
+    sum = df['total_price'].sum()
+
+    pdf.cell(w=30, h=8, txt="", border=1)
+    pdf.cell(w=65, h=8, txt="", border=1)
+    pdf.cell(w=40, h=8, txt="", border=1)
+    pdf.cell(w=35, h=8, txt="", border=1)
+    pdf.cell(w=25, h=8, txt=str(sum), border=1, ln=1)
+
+    # add total sum copy
+    pdf.set_font(family="Times", size=13, style='B')
+    pdf.cell(w=25, h=8, txt=f"The total price for this invoice is {sum}", ln=1)
+
+    # add company name and logo
+    pdf.set_font(family="Times", size=12, style="B")
+    pdf.cell(w=25, h=8, txt=f"PythonHow")
+    pdf.image("pythonhow.png", w=10)
 
     pdf.output(f"PDFs/{Path(filepath).stem}.pdf")
